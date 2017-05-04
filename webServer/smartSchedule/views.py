@@ -11,7 +11,7 @@ def get_user(request,user_id):
         user = User.objects.get(ssn=user_id)
     except User.DoesNotExist:
         answ['status'] = 'FAIL'
-        return HttpResponse(json.dumps(answ))
+        return HttpResponse(json.dumps(answ), status=400)
     answ['userId'] = user.ssn
     answ['name'] = user.firstName + " " + user.lastName
     answ['schedule'] = []
@@ -59,4 +59,10 @@ def run_demo_script(request):
     f = open('real.json', 'r+')
     a = json.load(f)
     post('http://localhost:8000/upload/', json=a)
-    return HttpResponse()
+    return HttpResponse(status=200)
+
+
+def clear_db(request):
+    User.objects.all().delete()
+    Therapy.objects.all().delete()
+    return HttpResponse(status=200)

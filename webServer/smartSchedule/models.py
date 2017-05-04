@@ -23,7 +23,7 @@ class Therapy(models.Model):
     location = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.therapyName+ " " + self.ssn.firstName + " " +self.ssn.lastName +  " " + self.location +" "+ self.date
+        return self.ssn.firstName + " " + self.ssn.lastName + " " + self.therapyName +  " " + self.location + " " + self.date
 
 
 
