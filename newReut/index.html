@@ -56,7 +56,7 @@
                             <div class="col-xs-5"></div>
                             <div class="col-xs-2">
                                 <h4>2. Log In To Google</h4>
-                                <button type="button" class="btn btn-default"><img class="google-icon" src="img/google-icon.png"></button>
+                                <button id="authorize-button"  type="button" class="btn btn-default"><img class="google-icon" src="img/google-icon.png"></button>
                             </div>
                             <div class="col-xs-5"></div>
                         </div>
@@ -73,6 +73,11 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+            onload="this.onload=function(){};handleClientLoad()"
+            onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+    <script src="CalanderSync.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,7 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 var SCOPES = "https://www.googleapis.com/auth/calendar";
 
 var authorizeButton = document.getElementById('authorize-button');
-var signoutButton = document.getElementById('signout-button');
+// var signoutButton = document.getElementById('signout-button');
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -37,7 +37,7 @@ function initClient() {
         // Handle the initial sign-in state.
         updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
         authorizeButton.onclick = handleAuthClick;
-        signoutButton.onclick = handleSignoutClick;
+        // signoutButton.onclick = handleSignoutClick;
     });
 }
 
@@ -48,12 +48,12 @@ function initClient() {
 function updateSigninStatus(isSignedIn) {
     if (isSignedIn) {
         authorizeButton.style.display = 'none';
-        signoutButton.style.display = 'block';
+        // signoutButton.style.display = 'block';
         // getScheduleFromServer();
         insertEvent();
     } else {
         authorizeButton.style.display = 'block';
-        signoutButton.style.display = 'none';
+        // signoutButton.style.display = 'none';
     }
 }
 
@@ -100,7 +100,7 @@ function insertEvent(event) {
     var location = 'Daniel Hotel, Herzelia';
     var eventName = 'Hackathon';
     date = date.split('/');
-    var gmtTimeZone = d.indexOf('GMT')+3;
+    var gmtTimeZone = date.indexOf('GMT')+3;
     start = {}; end = {};
     var parseDate = function(time) {
         date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
@@ -145,4 +145,12 @@ function insertEvent(event) {
     request.execute(function(event) {
         console.log('Event created: ', event);
     });
+}
+
+function successPopUp() {
+
+}
+
+function failurePopUp(error) {
+
 }
