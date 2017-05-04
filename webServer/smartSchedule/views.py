@@ -3,7 +3,7 @@ from models import User, Therapy
 from django.http import HttpResponse
 import json
 from requests import post
-
+from django.shortcuts import render
 
 def get_user(request,user_id):
     answ = {}
@@ -66,3 +66,7 @@ def clear_db(request):
     User.objects.all().delete()
     Therapy.objects.all().delete()
     return HttpResponse(status=200)
+
+
+def index(request):
+    return render(request, 'smartSchedule/index.html', {})
