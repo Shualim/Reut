@@ -6,14 +6,14 @@ from requests import post
 
 
 def get_user(request,user_id):
+    answ = {}
     try:
         user = User.objects.get(ssn=user_id)
     except User.DoesNotExist:
-        answ = {}
         answ['status'] = 'FAIL'
         return HttpResponse(json.dumps(answ))
-    s = str(user) + ""
-    return HttpResponse(json.dumps(s), content_type="application/json")
+    answ['status'] = 'OK'
+    return HttpResponse(json.dumps(answ), content_type="application/json")
 
 
 def add_user_schedule(request):
