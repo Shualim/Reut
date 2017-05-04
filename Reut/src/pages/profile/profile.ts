@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+  selector: 'page-profile',
+  templateUrl: 'profile.html'
 })
 export class AboutPage {
   id: any;
