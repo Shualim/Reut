@@ -6,8 +6,13 @@ from requests import post
 
 
 def get_user(request,user_id):
-    user = User.objects.get(ssn=user_id)
-    s = user + ""
+    try:
+        user = User.objects.get(ssn=user_id)
+    except User.DoesNotExist:
+        answ = {}
+        answ['status'] = 'FAIL'
+        return HttpResponse(json.dumps(answ))
+    s = str(user) + ""
     return HttpResponse(json.dumps(s), content_type="application/json")
 
 
