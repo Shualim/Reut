@@ -57,9 +57,54 @@
 			"end": "10:30",
 			"location":"therapy room",
 			"therapistName":"וידיוטרפיה עצמאי"
+		},
+		{
+			"name": "ריפוי בעיסוק מודרך אשפוז יום",
+			"date": "08/05/2017",
+			"start":"10:30",
+			"end": "11:00",
+			"location":"therapy room",
+			"therapistName":"דויטש רוני"
+		},
+		{
+			"name": "BIOFIDBACK אשפוז יום",
+			"date": "08/05/2017",
+			"start":"11:15",
+			"end": "12:00",
+			"location":"therapy room",
+			"therapistName":"רוזנשטט קובי"
+		},
+		{
+			"name": "אבחון נוירו פסיכולוגי א יום",
+			"date": "08/05/2017",
+			"start":"12:00",
+			"end": "13:30",
+			"location":"therapy room",
+			"therapistName":"גרבר זכריה"
+		},
+		{
+			"name": "פיזיוטרפיה אשפוז יום",
+			"date": "10/05/2017",
+			"start":"09:15",
+			"end": "10:00",
+			"location":"therapy room",
+			"therapistName":"לוזנסקי אדי"
+		},
+		{
+			"name": "ריפוי בעיסוק מודרך א יום",
+			"date": "10/05/2017",
+			"start":"10:00",
+			"end": "10:30",
+			"location":"therapy room",
+			"therapistName":"דויטש רוני"
+		},
+		{
+			"name": "ריפוי בעיסוק אשפוז יום",
+			"date": "10/05/2017",
+			"start":"10:30",
+			"end": "11:00",
+			"location":"therapy room",
+			"therapistName":"דויטש רוני"
 		}
-
-
 	]
-
 }
