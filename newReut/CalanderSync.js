@@ -1,0 +1,148 @@
+/**
+ * Created by ysayag on 04/05/2017.
+ */
+    // Client ID and API key from the Developer Console
+var CLIENT_ID = '249410764144-9fihc6l2fpgis99r7ulem4o93ad9dpam.apps.googleusercontent.com';
+
+// Array of API discovery doc URLs for APIs used by the quickstart
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+var SCOPES = "https://www.googleapis.com/auth/calendar";
+
+var authorizeButton = document.getElementById('authorize-button');
+var signoutButton = document.getElementById('signout-button');
+
+/**
+ *  On load, called to load the auth2 library and API client library.
+ */
+function handleClientLoad() {
+    gapi.load('client:auth2', initClient);
+}
+
+/**
+ *  Initializes the API client library and sets up sign-in state
+ *  listeners.
+ */
+function initClient() {
+    gapi.client.init({
+        discoveryDocs: DISCOVERY_DOCS,
+        clientId: CLIENT_ID,
+        scope: SCOPES
+    }).then(function () {
+        // Listen for sign-in state changes.
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+        // Handle the initial sign-in state.
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        authorizeButton.onclick = handleAuthClick;
+        signoutButton.onclick = handleSignoutClick;
+    });
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+    if (isSignedIn) {
+        authorizeButton.style.display = 'none';
+        signoutButton.style.display = 'block';
+        // getScheduleFromServer();
+        insertEvent();
+    } else {
+        authorizeButton.style.display = 'block';
+        signoutButton.style.display = 'none';
+    }
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick(event) {
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+function handleSignoutClick(event) {
+    gapi.auth2.getAuthInstance().signOut();
+}
+
+function getScheduleFromServer(userID) {
+
+
+    var foo = '{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}';
+    JSON.parse(foo, function(key, value) {})
+
+    var response = '{"userId" :"305685406", "name" : "tomer", "schedule" : [{"name": "therapy", "date": "12-01-2017", "start":"12:00", "end": "16:00", "location":"therapy room", "therapistName":"Ilana"}, {"name": "therapy2", "start":"15:00", "end": "18:00", "location":"therapy room", "therapistName":"Ilana"}]}'
+    var events = JSON.parse(response).schedule;
+    events.forEach(insertEvent);
+}
+
+function ListEvents() {
+
+}
+
+/**
+ * Print the summary and start datetime/date of the next ten events in
+ * the authorized user's calendar. If no events are found an
+ * appropriate message is printed.
+ */
+function insertEvent(event) {
+    console.log(event);
+    // var date = event.date;
+    var date = '21/03/2017';
+    var start = '15:00';
+    var end = '18:00';
+    var location = 'Daniel Hotel, Herzelia';
+    var eventName = 'Hackathon';
+    date = date.split('/');
+    var gmtTimeZone = d.indexOf('GMT')+3;
+    start = {}; end = {};
+    var parseDate = function(time) {
+        date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
+    };
+    gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
+    start.dateTime = parseDate(start);
+    end.dateTime = parseDate(end);
+    end.dateTime = date[2] + '-' + date[1] + '-' + date[0] + 'T' + end + ':00' + gmtTimeZone + ':00';
+
+    var event2 = {
+        'summary': 'Hackathon',
+        'location': 'Daniel Hotel, Herzelia',
+        'description': 'Winning at least second place',
+        'start': {
+            'dateTime': '2017-05-10T09:00:00+02:00',
+            'timeZone': 'Asia/Jerusalem'
+        },
+        'end': {
+            'dateTime': '2017-05-10T17:00:00+02:00',
+            'timeZone': 'Asia/Jerusalem'
+        },
+        'recurrence': [
+            'RRULE:FREQ=DAILY;COUNT=1'
+        ],
+        'attendees': [
+            {'email': 'danielle611@example.com'},
+        ],
+        'reminders': {
+            'useDefault': false,
+            'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10}
+            ]
+        }
+    };
+
+    var request = gapi.client.calendar.events.insert({
+        'calendarId': 'primary',
+        'resource': event2
+    });
+
+    request.execute(function(event) {
+        console.log('Event created: ', event);
+    });
+}
