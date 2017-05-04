@@ -1,0 +1,65 @@
+{
+	"userId" :"123456789",
+	"name" : "ישראל ישראלי",
+	"schedule" : [
+		{
+			"name": "ריפוי בדיבור אשפוז יום",
+			"date": "07/05/2017",
+			"start":"08:30",
+			"end": "09:00",
+			"location":"therapy room",
+			"therapistName":"קטרן ג'קלין"
+		},
+		{
+			"name": "פיזיוטרפיה אשפוז יום",
+			"date": "07/05/2017",
+			"start":"09:00",
+			"end": "09:30",
+			"location":"therapy room",
+			"therapistName":"לוזנסקי אדי"
+		},
+		{
+			"name": "וידיוטרפיה אשפוז יום",
+			"date": "07/05/2017",
+			"start":"09:30",
+			"end": "10:00",
+			"location":"therapy room",
+			"therapistName":"וידיוטרפיה עצמאי"
+		},
+		{
+			"name": "ריפוי בעיסוק אשפוז יום",
+			"date": "07/05/2017",
+			"start":"10:30",
+			"end": "11:00",
+			"location":"therapy room",
+			"therapistName":"הרלינג נעם תמר"
+		},
+		{
+			"name": "ריפוי בדיבור אשפוז יום",
+			"date": "08/05/2017",
+			"start":"09:00",
+			"end": "09:30",
+			"location":"therapy room",
+			"therapistName":"קטרן ג'קלין"
+		},
+		{
+			"name": "ריפוי בעיסוק אשפוז יום",
+			"date": "08/05/2017",
+			"start":"09:30",
+			"end": "10:00",
+			"location":"therapy room",
+			"therapistName":"שימנוב-שולץ מיכל"
+		},
+		{
+			"name": "וידיוטרפיה אשפוז יום",
+			"date": "08/05/2017",
+			"start":"10:00",
+			"end": "10:30",
+			"location":"therapy room",
+			"therapistName":"וידיוטרפיה עצמאי"
+		}
+
+
+	]
+
+}
