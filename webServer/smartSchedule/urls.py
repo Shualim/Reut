@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^?P<user_id>(id=[0-9]+)/$', views.get_user)
+    url(r'^id=(?P<user_id>[0-9]+)$', views.get_user)
 ]
