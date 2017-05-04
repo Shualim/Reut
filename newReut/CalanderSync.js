@@ -48,8 +48,6 @@ function updateSigninStatus(isSignedIn) {
         authorizeButton.style.display = 'none';
         getScheduleFromServer();
         insertEvent();
-    } else {
-        authorizeButton.style.display = 'block';
     }
 }
 
@@ -97,7 +95,7 @@ function insertEvent(event) {
     var eventName = 'Hackathon';
     date = date.split('/');
     var gmtTimeZone = date.indexOf('GMT')+3;
-    start = {}; end = {};
+    var start = {}; var end = {};
     var parseDate = function(time) {
         debugger;
         return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
