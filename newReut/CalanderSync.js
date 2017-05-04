@@ -44,10 +44,20 @@ function initClient() {
  *  appropriately. After a sign-in, the API is called.
  */
 function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
+    if (isSignedIn && !window.sessionStorage.getItem('wasLoggedIn')
+        && !window.sessionStorage.getItem('EventsInserted')) {
+        window.sessionStorage.setItem('wasLoggedIn', true);
         authorizeButton.style.display = 'none';
-        getScheduleFromServer();
+        // getScheduleFromServer();
         insertEvent();
+    }
+    else if (window.sessionStorage.getItem('wasLoggedIn')){
+        if ( window.sessionStorage.getItem('EventsInserted')) { // case of was logged in in current session and events inserted
+            successModal("Calendar Updated Successfuly");
+        }
+        else { // case of insertion fail but login success
+            failureModal({message: 'Insertion of events failed'});
+        }
     }
 }
 
@@ -86,23 +96,24 @@ function ListEvents() {
  * appropriate message is printed.
  */
 function insertEvent(event) {
-    console.log(event);
-    // var date = event.date;
-    var date = '21/03/2017';
-    var startTime = '15:00';
-    var endTime = '18:00';
-    var location = 'Daniel Hotel, Herzelia';
-    var eventName = 'Hackathon';
-    date = date.split('/');
-    var gmtTimeZone = date.indexOf('GMT')+3;
-    var start = {}; var end = {};
-    var parseDate = function(time) {
-        debugger;
-        return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
-    };
-    gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
-    start.dateTime = parseDate(startTime);
-    end.dateTime = parseDate(endTime);
+    // // var date = event.date;
+    // var date = '21/03/2017';
+    // var startTime = '15:00';
+    // var endTime = '18:00';
+    // var location = 'Daniel Hotel, Herzelia';
+    // var eventName = 'Hackathon';
+    // date = date.split('/');
+    // var gmtTimeZone = date.indexOf('GMT')+3;
+    // var start = {}; var end = {};
+    // var parseDate = function(time) {
+    //     debugger;
+    //     return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
+    // };
+    // gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
+    // start.dateTime = parseDate(startTime);
+    // end.dateTime = parseDate(endTime);
+
+     console.log('inserting events!');
 
     var event2 = {
         'summary': 'Hackathon',
@@ -132,19 +143,25 @@ function insertEvent(event) {
     };
 
     var request = gapi.client.calendar.events.insert({
-        'calendarId': 'primary',
+        'calendarId': 'pkgiq4dasdasdas2321312312.com',
         'resource': event2
     });
 
-    request.execute(function(event) {
-        console.log('Event created: ', event);
+    request.execute(function(resp) {
+        if (resp.error) {
+            failureModal(resp.error);
+        }
+        else {
+            window.sessionStorage.setItem('EventsInserted', true);
+            successModal(resp)
+        }
     });
 }
 
-function successPopUp() {
-
+function successModal(resp) {
+    console.log('Events created: ', resp);
 }
 
-function failurePopUp(error) {
-
+function failureModal(error) {
+    console.log('FAILLL, reaseon: ', error.message);
 }
