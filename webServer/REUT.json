@@ -4,7 +4,7 @@
 	"schedule" : [
 		{
 			"name": "therapy",
-			"date": "23/01/2017",
+			"date": "12/01/2017",
 			"start":"12:00",
 			"end": "16:00",
 			"location":"therapy room",

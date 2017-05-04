@@ -12,7 +12,6 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 var SCOPES = "https://www.googleapis.com/auth/calendar";
 
 var authorizeButton = document.getElementById('authorize-button');
-// var signoutButton = document.getElementById('signout-button');
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -37,7 +36,6 @@ function initClient() {
         // Handle the initial sign-in state.
         updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
         authorizeButton.onclick = handleAuthClick;
-        // signoutButton.onclick = handleSignoutClick;
     });
 }
 
@@ -48,12 +46,10 @@ function initClient() {
 function updateSigninStatus(isSignedIn) {
     if (isSignedIn) {
         authorizeButton.style.display = 'none';
-        // signoutButton.style.display = 'block';
-        // getScheduleFromServer();
+        getScheduleFromServer();
         insertEvent();
     } else {
         authorizeButton.style.display = 'block';
-        // signoutButton.style.display = 'none';
     }
 }
 
@@ -75,7 +71,7 @@ function getScheduleFromServer(userID) {
 
 
     var foo = '{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}';
-    JSON.parse(foo, function(key, value) {})
+    JSON.parse(foo, function(key, value) {});
 
     var response = '{"userId" :"305685406", "name" : "tomer", "schedule" : [{"name": "therapy", "date": "12-01-2017", "start":"12:00", "end": "16:00", "location":"therapy room", "therapistName":"Ilana"}, {"name": "therapy2", "start":"15:00", "end": "18:00", "location":"therapy room", "therapistName":"Ilana"}]}'
     var events = JSON.parse(response).schedule;
@@ -95,20 +91,20 @@ function insertEvent(event) {
     console.log(event);
     // var date = event.date;
     var date = '21/03/2017';
-    var start = '15:00';
-    var end = '18:00';
+    var startTime = '15:00';
+    var endTime = '18:00';
     var location = 'Daniel Hotel, Herzelia';
     var eventName = 'Hackathon';
     date = date.split('/');
     var gmtTimeZone = date.indexOf('GMT')+3;
     start = {}; end = {};
     var parseDate = function(time) {
-        date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
+        debugger;
+        return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
     };
     gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
-    start.dateTime = parseDate(start);
-    end.dateTime = parseDate(end);
-    end.dateTime = date[2] + '-' + date[1] + '-' + date[0] + 'T' + end + ':00' + gmtTimeZone + ':00';
+    start.dateTime = parseDate(startTime);
+    end.dateTime = parseDate(endTime);
 
     var event2 = {
         'summary': 'Hackathon',
