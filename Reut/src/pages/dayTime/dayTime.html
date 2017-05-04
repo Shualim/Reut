@@ -6,6 +6,15 @@
   </ion-navbar>
 </ion-header>
 
+
+<ion-list>
+      <ion-item ng-repeat="n in appointments track by $index" class="item-left">
+          <p><input type="text" ng-model="n.location" id="location_textbox" ></p>
+                </ion-item>
+    </ion-list>
+
+
+
 <ion-content>
   <ion-list>
     <ion-list-header>Follow us on Twitter</ion-list-header>

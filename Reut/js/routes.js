@@ -7,23 +7,16 @@ angular.module('app.routes', [])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
-  
 
-      .state('page', {
-    url: '/page1',
-    templateUrl: 'templates/page.html',
-    controller: 'pageCtrl'
+  .state('dayTime', {
+    url: '/dayTime',
+    templateUrl: 'src/pages/dayTime/dayTime.html',
+    controller: 'dayTimeCtrl'
   })
 
-  .state('page2', {
-    url: '/page2',
-    templateUrl: 'templates/page2.html',
-    controller: 'page2Ctrl'
-  })
 
-$urlRouterProvider.otherwise('/page1')
+$urlRouterProvider.otherwise('/dayTime')
 
-  
+
 
 });
