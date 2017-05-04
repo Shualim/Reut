@@ -4,12 +4,13 @@ from django.db import models
 
 
 class User(models.Model):
-    ssn = models.CharField(max_length=9)
+    ssn = models.CharField(max_length=9,primary_key=True)
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
 
 
 class Therapies(models.Model):
+    ssn = models.ForeignKey(User)
     therapistName = models.CharField(max_length=100)
     volunteerName = models.CharField(max_length=100)
     date = models.DateField()
