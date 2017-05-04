@@ -1,4 +1,4 @@
-from models import User,Therapies
+from models import User, Therapy
 from django.http import HttpResponse
 import json
 
@@ -17,8 +17,15 @@ def add_user_schedule(request):
         return HttpResponse(response, content_type="application/json")
     user_id= body['userId']
     user_name= body['name']
-    first_name,last_name = user_id.split('\s+')
+    first_name,last_name = user_name.split('\s+')
     user = User(ssn=user_id, firstName=first_name, lastName=last_name)
+    index = 0
     for therapy in body['schedule']:
-
-
+        th = therapy[index]
+        new_therapy = Therapy(therapistName=th['therapistName'], date=th['date'],startTime=th['start'],endTime =th['end'],\
+                              location=th['location'],ssn = user.ssn, therapyName = th['name'])
+        new_therapy.save()
+        index = index+1
+    if not User.objects.get(pk=user.ssn).exists():
+        user.save()
+    return HttpResponse()
