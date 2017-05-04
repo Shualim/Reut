@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from models import User, Therapy
 from django.http import HttpResponse
-
-import datetime
 import json
 from requests import post
 
@@ -14,6 +12,21 @@ def get_user(request,user_id):
     except User.DoesNotExist:
         answ['status'] = 'FAIL'
         return HttpResponse(json.dumps(answ))
+    answ['userId'] = user.ssn
+    answ['name'] = user.firstName + " " + user.lastName
+    answ['schedule'] = []
+    therapies = Therapy.objects.filter(ssn_id = user.ssn)
+    for therapy in therapies:
+        th = dict()
+        th['name'] = therapy.therapyName
+        th['date'] = therapy.date
+        th['start'] = therapy.startTime
+        th['end'] = therapy.endTime
+        th['location'] = therapy.location
+        th['therapistName'] = therapy.therapistName
+        if therapy.volunteerName is not None:
+            th['volunteerName'] = therapy.volunteerName
+        answ['schedule'].append(th)
     answ['status'] = 'OK'
     print json.dumps(answ)
     return HttpResponse(json.dumps(answ), content_type="application/json")
