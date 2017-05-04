@@ -28,26 +28,26 @@ def get_user(request,user_id):
             th['volunteerName'] = therapy.volunteerName
         answ['schedule'].append(th)
     answ['status'] = 'OK'
-    print json.dumps(answ)
     return HttpResponse(json.dumps(answ), content_type="application/json")
 
 
 def add_user_schedule(request):
     body = json.loads(request.body)
     response = {}
-    filters = ["אשפוז","אשפוז יום","א יום"]
+    #filters = ["אשפוז", "אשפוז יום","א יום"]
     if not request.method == "POST":
         response["status"] = "FAIL"
         return HttpResponse(response, content_type="application/json")
     user_id = body['userId']
     user_name = body['name']
-    first_name,last_name = user_name.split()
+    first_name, last_name = user_name.encode('utf-8').split()
     user = User(ssn=user_id, firstName=first_name, lastName=last_name)
     for th in body['schedule']:
-        for fltr in filters:
-            th['name'] = th['name'].replace(fltr, "")
-        new_therapy = Therapy(therapistName=th['therapistName'], date=th['date'],startTime=th['start'],\
-                                  endTime=th['end'],location=th['location'], therapyName = th['name'])
+        #for fltr in filters:
+        #    th['name'] = th['name'].replace(fltr.encode('utf-8'), "")
+        new_therapy = Therapy(therapistName=th['therapistName'].encode('utf-8'), date=th['date'],startTime=th['start'],\
+                                  endTime=th['end'],location=th['location'].encode('utf-8'),\
+                              therapyName = th['name'].encode('utf-8'))
         new_therapy.ssn_id = user.ssn
         new_therapy.save()
     user.save()
