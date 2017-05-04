@@ -1,5 +1,6 @@
 from models import User, Therapy
 from django.http import HttpResponse
+
 import datetime
 import json
 from requests import post
