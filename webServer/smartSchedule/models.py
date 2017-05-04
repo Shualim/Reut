@@ -9,19 +9,21 @@ class User(models.Model):
     lastName = models.CharField(max_length=50)
 
     def __str__(self):
-        
+        return self.firstName + " " + self.lastName + " " + self.ssn
 
 
 class Therapy(models.Model):
+    ssn = models.ForeignKey(User, on_delete = models.CASCADE)
     therapyName = models.CharField(max_length=100)
-    ssn = models.ForeignKey(User)
     therapistName = models.CharField(max_length=100)
-    volunteerName = models.CharField(max_length=100)
-    date = models.DateField()
-    startTime = models.DateTimeField()
-    endTime = models.DateTimeField()
+    volunteerName = models.CharField(max_length=100,null=True)
+    date = models.CharField(max_length=100)
+    startTime = models.CharField(max_length=50)
+    endTime = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.therapyName+ " " + self.ssn.firstName + " " +self.ssn.lastName +  " " + self.location +" "+ self.date
 
 
 

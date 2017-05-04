@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script>
+        var csrftoken = $.cookie('csrftoken');
+        var json = {
+	        "userId" :"305685406",
+	        "name" : "tomer",
+	        "schedule" : [
+		        {
+			        "name": "therapy",
+			        "date": "12-01-2017",
+		    	    "start":"12:00",
+		    	    "end": "16:00",
+		    	    "location":"therapy room",
+		    	    "therapistName":"Ilana"
+                },
+		        {
+			        "name": "therapy2",
+			        "start":"15:00",
+			        "end": "18:00",
+			        "location":"therapy room",
+			        "therapistName":"Ilana"
+		        }
+	        ],
+            "CSRF": csrftoken
+        }
+        $.ajax({
+            type: "POST",
+            url: "/upload/",
+            dataType: 'json',
+            data: json}
+            );
+
+    </script>
+
+</head>
+
+
+<body>
+
+
+
+</body>
+</html>
