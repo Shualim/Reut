@@ -1,4 +1,4 @@
-from models import User
+from models import User,Therapies
 from django.http import HttpResponse
 import json
 
@@ -15,4 +15,10 @@ def add_user_schedule(request):
     if not request.method == "POST":
         response["answer"] = "NOK"
         return HttpResponse(response, content_type="application/json")
-    user_id= body['name']
+    user_id= body['userId']
+    user_name= body['name']
+    first_name,last_name = user_id.split('\s+')
+    user = User(ssn=user_id, firstName=first_name, lastName=last_name)
+    for therapy in body['schedule']:
+
+
