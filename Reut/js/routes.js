@@ -13,7 +13,10 @@ angular.module('app.routes', [])
     templateUrl: 'src/pages/dayTime/dayTime.html',
     controller: 'dayTimeCtrl'
   })
-
+  .state('profile', {
+    url: '/profile',
+    templateUrl: 'src/pages/profile/profile.html'
+  })
 
 $urlRouterProvider.otherwise('/dayTime')
 

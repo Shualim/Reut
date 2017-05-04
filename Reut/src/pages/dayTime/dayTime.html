@@ -1,26 +1,13 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Contact
+      Itinerary
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-
-<ion-list>
-      <ion-item ng-repeat="n in appointments track by $index" class="item-left">
-          <p><input type="text" ng-model="n.location" id="location_textbox" ></p>
-                </ion-item>
-    </ion-list>
-
-
-
 <ion-content>
-  <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      @ionicframework
-    </ion-item>
+  <ion-list [virtualScroll]="items">
+    <ion-item *virtualItem="let item">{{item}}</ion-item>
   </ion-list>
 </ion-content>
