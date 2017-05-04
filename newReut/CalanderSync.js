@@ -78,10 +78,7 @@ function handleSignoutClick(event) {
 function getScheduleFromServer(userID) {
 
 
-    var foo = '{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}';
-    JSON.parse(foo, function(key, value) {});
-
-    var response = '{"userId" :"305685406", "name" : "tomer", "schedule" : [{"name": "therapy", "date": "12-01-2017", "start":"12:00", "end": "16:00", "location":"therapy room", "therapistName":"Ilana"}, {"name": "therapy2", "start":"15:00", "end": "18:00", "location":"therapy room", "therapistName":"Ilana"}]}'
+    var response = '{"userId" :"305685406", "name" : "tomer", "schedule" : [{"name": "therapy", "date": "21/03/2017", "start":"12:00", "end": "16:00", "location":"therapy room", "therapistName":"Ilana"}, {"name": "therapy2", "start":"15:00", "end": "18:00", "location":"therapy room", "therapistName":"Ilana"}]}'
     var events = JSON.parse(response).schedule;
     events.forEach(insertEvent);
 }
@@ -95,56 +92,71 @@ function ListEvents() {
  * the authorized user's calendar. If no events are found an
  * appropriate message is printed.
  */
-function insertEvent(event) {
-    // // var date = event.date;
-    // var date = '21/03/2017';
-    // var startTime = '15:00';
-    // var endTime = '18:00';
-    // var location = 'Daniel Hotel, Herzelia';
-    // var eventName = 'Hackathon';
-    // date = date.split('/');
-    // var gmtTimeZone = date.indexOf('GMT')+3;
-    // var start = {}; var end = {};
-    // var parseDate = function(time) {
-    //     debugger;
-    //     return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
-    // };
-    // gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
-    // start.dateTime = parseDate(startTime);
-    // end.dateTime = parseDate(endTime);
-
-     console.log('inserting events!');
-
-    var event2 = {
-        'summary': 'Hackathon',
-        'location': 'Daniel Hotel, Herzelia',
-        'description': 'Winning at least second place',
-        'start': {
-            'dateTime': '2017-05-10T09:00:00+02:00',
-            'timeZone': 'Asia/Jerusalem'
-        },
-        'end': {
-            'dateTime': '2017-05-10T17:00:00+02:00',
-            'timeZone': 'Asia/Jerusalem'
-        },
-        'recurrence': [
-            'RRULE:FREQ=DAILY;COUNT=1'
-        ],
-        'attendees': [
-            {'email': 'danielle611@example.com'},
-        ],
+function insertEvent(obj) {
+    var event = {
         'reminders': {
             'useDefault': false,
             'overrides': [
                 {'method': 'email', 'minutes': 24 * 60},
                 {'method': 'popup', 'minutes': 10}
             ]
-        }
+        },
+        'recurrence': [
+            'RRULE:FREQ=DAILY;COUNT=1'
+        ]
     };
+
+    var startTime = obj.start;
+    var endTime = obj.end;
+    var date = obj.date.split('/');
+    var gmtTimeZone = date.indexOf('GMT')+3;
+    var start = {}; var end = {};
+    var parseDate = function(time) {
+        debugger;
+        return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
+    };
+    gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
+    start.dateTime = parseDate(startTime);
+    end.dateTime = parseDate(endTime);
+
+    event.summary = obj.get('name') + ' - ' + obj.get('therapistName');
+    event.location = obj.location;
+    event.start = {'dateTime': startTime, 'timeZone': 'Asia/Jerusalem'};
+    event.end = {'dateTime': endTime, 'timeZone': 'Asia/Jerusalem'};
+
+
+    console.log('inserting event!');
+
+    // var event2 = {
+    //     'summary': 'Hackathon',
+    //     'location': 'Daniel Hotel, Herzelia',
+    //     'description': 'Winning at least second place',
+    //     'start': {
+    //         'dateTime': '2017-05-10T09:00:00+02:00',
+    //         'timeZone': 'Asia/Jerusalem'
+    //     },
+    //     'end': {
+    //         'dateTime': '2017-05-10T17:00:00+02:00',
+    //         'timeZone': 'Asia/Jerusalem'
+    //     },
+    //     'recurrence': [
+    //         'RRULE:FREQ=DAILY;COUNT=1'
+    //     ],
+    //     'attendees': [
+    //         {'email': 'danielle611@example.com'}
+    //     ],
+    //     'reminders': {
+    //         'useDefault': false,
+    //         'overrides': [
+    //             {'method': 'email', 'minutes': 24 * 60},
+    //             {'method': 'popup', 'minutes': 10}
+    //         ]
+    //     }
+    // };
 
     var request = gapi.client.calendar.events.insert({
         'calendarId': 'pkgiq4dasdasdas2321312312.com',
-        'resource': event2
+        'resource': event
     });
 
     request.execute(function(resp) {
