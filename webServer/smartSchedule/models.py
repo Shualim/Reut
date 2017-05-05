@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.db import models
@@ -9,8 +10,7 @@ class User(models.Model):
     lastName = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.firstName + " " + self.lastName + " " + self.ssn
-
+        return '%s %s - %s' %(self.firstName,self.lastName,self.ssn)
 
 class Therapy(models.Model):
     ssn = models.ForeignKey(User, on_delete = models.CASCADE)
@@ -23,7 +23,7 @@ class Therapy(models.Model):
     location = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.ssn.firstName + " " + self.ssn.lastName + " " + self.therapyName +  " " + self.location + " " + self.date
+        return self.ssn.firstName + " " + self.ssn.lastName + ", " + self.therapyName +  ", " + self.location + ", " + self.date
 
 
 

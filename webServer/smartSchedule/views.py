@@ -58,7 +58,7 @@ def add_user_schedule(request):
 def run_demo_script(request):
     f = open('real.json', 'r+')
     a = json.load(f)
-    post('http://localhost:8000/upload/', json=a)
+    post('http://localhost:63343/upload/', json=a)
     return HttpResponse(status=200)
 
 
