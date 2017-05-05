@@ -60,7 +60,7 @@ hr.star-primary:after {
 .fill {
   height: 100%;
   text-align: center;
-  background: #18BC9C;
+  background: rgba(251, 255, 0, 0.72);
   color: white;
 }
 .container {

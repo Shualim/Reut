@@ -79,6 +79,48 @@
     </script>
     <script src="{% static 'smartSchedule/CalanderSync.js' %}"></script>
     <!--<script src="{% static 'smartSchedule/TestRequests.js' %}"></script>-->
+    <!-- Modals -->
+    <div class="modal fade" id="failureModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Failure</h4>
+                </div>
+                <div class="modal-body">
+                    <p>The following error has occured while attempting to load your itinerary:</p>
+                    <div class="panel panel-default">
+                        <div id="errMsg" class="panel-body"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="successModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Success</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Successfuly loaded the events to your google calendar</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </body>
 
 </html>

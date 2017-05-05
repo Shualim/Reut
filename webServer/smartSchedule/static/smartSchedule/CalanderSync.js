@@ -85,21 +85,41 @@ function handleSignoutClick(event) {
     gapi.auth2.getAuthInstance().signOut();
 }
 
+//function sleep(milliseconds) {
+//    var start = new Date().getTime();
+//    while(true) {
+//        if ((new Date().getTime() - start) > milliseconds){
+//            break;
+//        }
+//    }
+//}
+
 function getScheduleFromServer(userID) {
     //TODO validation for id
     var idValue = $('#id-input')[0].value;
     $.get("http://localhost:63343/id=" + idValue ,function(data) {
-        var timedOutInsert = function(event){
-            setTimeout(function() {insertEvent(event)}, 200);
-        };
         var events = data.schedule;
-        events.forEach(timedOutInsert);
+        for (var i =0 ; i< events.length ; i++) {
+            insertEvent(events[i]);
+        }
+        setTimeout(successModal,2500);
+        //events.forEach(insertEvent);
     })
         .fail(function() {
             gapi.auth2.getAuthInstance().signOut();
             failureModal('Request to server failed (possible invalid id)');
         });
 }
+
+//function checkWhenDone() {
+//    if (!window.didFail){
+//        successModal();
+//    }
+//    else {
+//        gapi.auth2.getAuthInstance().signOut();
+//        failureModal('Failed to insert modal');
+//    }
+//}
 
 /**
  * Print the summary and start datetime/date of the next ten events in
@@ -143,19 +163,18 @@ function insertEvent(eventObj) {
     request.execute(function(resp) {
         gapi.auth2.getAuthInstance().signOut();
         if (resp.error) {
-            failureModal(resp.error);
+            failureModal(resp.error.message);
         }
-        else {
-            successModal(resp)
-        }
-    });
+    })
+    ;
 }
 
-function successModal(resp) {
-    console.log('Events created: ', resp);
+function successModal() {
+    $("#successModal").modal();
+    //console.log('Success Event created');
 }
 
-function failureModal(error) {
-    console.log('FAILLL, reaseon: ', error);
+function failureModal(errorMessage) {
+    console.log('event insertsion failed', errorMessage);
 }
 
