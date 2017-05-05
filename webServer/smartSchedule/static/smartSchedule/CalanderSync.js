@@ -89,9 +89,11 @@ function getScheduleFromServer(userID) {
     //TODO validation for id
     var idValue = $('#id-input')[0].value;
     $.get("http://localhost:63343/id=" + idValue ,function(data) {
-        console.log('data ', data);
+        var timedOutInsert = function(event){
+            setTimeout(function() {insertEvent(event)}, 200);
+        };
         var events = data.schedule;
-        events.forEach(insertEvent);
+        events.forEach(timedOutInsert);
     })
         .fail(function() {
             gapi.auth2.getAuthInstance().signOut();
@@ -128,13 +130,10 @@ function insertEvent(eventObj) {
     gmtTimeZone = now.substring(gmtTimeZone, gmtTimeZone + 3);
     event.start.dateTime = parseDate(startTime);
     event.end.dateTime = parseDate(endTime);
-    console.log('eventObj.name: ', eventObj.name);
     event.summary = eventObj.name + ' - ' + eventObj.therapistName;
     event.location = eventObj.location;
     event.start.timeZone = 'Asia/Jerusalem';
     event.end.timeZone = 'Asia/Jerusalem';
-
-    console.log('inserting event!');
 
     var request = gapi.client.calendar.events.insert({
         'calendarId': 'primary',
@@ -159,6 +158,4 @@ function successModal(resp) {
 function failureModal(error) {
     console.log('FAILLL, reaseon: ', error);
 }
-// "2017-05-07T08:30:00+03:00"
-// "2017-05-10T17:00:00+02:00"
 
