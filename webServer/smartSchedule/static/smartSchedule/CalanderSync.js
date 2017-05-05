@@ -39,25 +39,35 @@ function initClient() {
     });
 }
 
+///**
+// *  Called when the signed in status changes, to update the UI
+// *  appropriately. After a sign-in, the API is called.
+// */
+//function updateSigninStatus2(isSignedIn) {
+//    if (isSignedIn && !window.sessionStorage.getItem('wasLoggedIn')
+//        && !window.sessionStorage.getItem('EventsInserted')) {
+//        window.sessionStorage.setItem('wasLoggedIn', true);
+//        authorizeButton.style.display = 'none';
+//         getScheduleFromServer();
+//    }
+//    else if (window.sessionStorage.getItem('wasLoggedIn')){
+//        if ( window.sessionStorage.getItem('EventsInserted')) { // case of was logged in in current session and events inserted
+//            successModal("Calendar Updated Successfuly");
+//        }
+//        else { // case of insertion fail but login success
+//            failureModal({message: 'Insertion of events failed'});
+//        }
+//    }
+//}
+
 /**
  *  Called when the signed in status changes, to update the UI
  *  appropriately. After a sign-in, the API is called.
  */
 function updateSigninStatus(isSignedIn) {
-    if (isSignedIn && !window.sessionStorage.getItem('wasLoggedIn')
-        && !window.sessionStorage.getItem('EventsInserted')) {
-        window.sessionStorage.setItem('wasLoggedIn', true);
+    if (isSignedIn && $('#id-input')[0].value != '') {
         authorizeButton.style.display = 'none';
-        // getScheduleFromServer();
-        insertEvent();
-    }
-    else if (window.sessionStorage.getItem('wasLoggedIn')){
-        if ( window.sessionStorage.getItem('EventsInserted')) { // case of was logged in in current session and events inserted
-            successModal("Calendar Updated Successfuly");
-        }
-        else { // case of insertion fail but login success
-            failureModal({message: 'Insertion of events failed'});
-        }
+        getScheduleFromServer();
     }
 }
 
@@ -76,18 +86,17 @@ function handleSignoutClick(event) {
 }
 
 function getScheduleFromServer(userID) {
-
-
-    var foo = '{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}';
-    JSON.parse(foo, function(key, value) {});
-
-    var response = '{"userId" :"305685406", "name" : "tomer", "schedule" : [{"name": "therapy", "date": "12-01-2017", "start":"12:00", "end": "16:00", "location":"therapy room", "therapistName":"Ilana"}, {"name": "therapy2", "start":"15:00", "end": "18:00", "location":"therapy room", "therapistName":"Ilana"}]}'
-    var events = JSON.parse(response).schedule;
-    events.forEach(insertEvent);
-}
-
-function ListEvents() {
-
+    //TODO validation for id
+    var idValue = $('#id-input')[0].value;
+    $.get("http://localhost:63343/id=" + idValue ,function(data) {
+        console.log('data ', data);
+        var events = data.schedule;
+        events.forEach(insertEvent);
+    })
+        .fail(function() {
+            gapi.auth2.getAuthInstance().signOut();
+            failureModal('Request to server failed (possible invalid id)');
+        });
 }
 
 /**
@@ -95,7 +104,7 @@ function ListEvents() {
  * the authorized user's calendar. If no events are found an
  * appropriate message is printed.
  */
-function insertEvent(obj) {
+function insertEvent(eventObj) {
     var event = {
         'reminders': {
             'useDefault': false,
@@ -104,70 +113,40 @@ function insertEvent(obj) {
                 {'method': 'popup', 'minutes': 10}
             ]
         },
-        'recurrence': [
-            'RRULE:FREQ=DAILY;COUNT=1'
-        ]
+        'start': {},
+        'end': {}
     };
 
-    var startTime = obj.start;
-    var endTime = obj.end;
-    var date = obj.date.split('/');
-    var gmtTimeZone = date.indexOf('GMT')+3;
-    var start = {}; var end = {};
+    var startTime = eventObj.start;
+    var endTime = eventObj.end;
+    var date = eventObj.date.split('/');
+    var now = Date();
+    var gmtTimeZone = Date().indexOf('GMT')+3;
     var parseDate = function(time) {
-        debugger;
         return date[2] + '-' + date[1] + '-' + date[0] + 'T' + time + ':00' + gmtTimeZone + ':00';
     };
-    gmtTimeZone = date.substring(gmtTimeZone, gmtTimeZone + 3);
-    start.dateTime = parseDate(startTime);
-    end.dateTime = parseDate(endTime);
-
-    event.summary = obj.get('name') + ' - ' + obj.get('therapistName');
-    event.location = obj.location;
-    event.start = {'dateTime': startTime, 'timeZone': 'Asia/Jerusalem'};
-    event.end = {'dateTime': endTime, 'timeZone': 'Asia/Jerusalem'};
-
+    gmtTimeZone = now.substring(gmtTimeZone, gmtTimeZone + 3);
+    event.start.dateTime = parseDate(startTime);
+    event.end.dateTime = parseDate(endTime);
+    console.log('eventObj.name: ', eventObj.name);
+    event.summary = eventObj.name + ' - ' + eventObj.therapistName;
+    event.location = eventObj.location;
+    event.start.timeZone = 'Asia/Jerusalem';
+    event.end.timeZone = 'Asia/Jerusalem';
 
     console.log('inserting event!');
 
-    // var event2 = {
-    //     'summary': 'Hackathon',
-    //     'location': 'Daniel Hotel, Herzelia',
-    //     'description': 'Winning at least second place',
-    //     'start': {
-    //         'dateTime': '2017-05-10T09:00:00+02:00',
-    //         'timeZone': 'Asia/Jerusalem'
-    //     },
-    //     'end': {
-    //         'dateTime': '2017-05-10T17:00:00+02:00',
-    //         'timeZone': 'Asia/Jerusalem'
-    //     },
-    //     'recurrence': [
-    //         'RRULE:FREQ=DAILY;COUNT=1'
-    //     ],
-    //     'attendees': [
-    //         {'email': 'danielle611@example.com'}
-    //     ],
-    //     'reminders': {
-    //         'useDefault': false,
-    //         'overrides': [
-    //             {'method': 'email', 'minutes': 24 * 60},
-    //             {'method': 'popup', 'minutes': 10}
-    //         ]
-    //     }
-    // };
-
     var request = gapi.client.calendar.events.insert({
-        'calendarId': 'pkgiq4dasdasdas2321312312.com',
+        'calendarId': 'primary',
         'resource': event
     });
 
     request.execute(function(resp) {
+        gapi.auth2.getAuthInstance().signOut();
         if (resp.error) {
             failureModal(resp.error);
         }
         else {
-            window.sessionStorage.setItem('EventsInserted', true);
             successModal(resp)
         }
     });
@@ -178,5 +157,8 @@ function successModal(resp) {
 }
 
 function failureModal(error) {
-    console.log('FAILLL, reaseon: ', error.message);
+    console.log('FAILLL, reaseon: ', error);
 }
+// "2017-05-07T08:30:00+03:00"
+// "2017-05-10T17:00:00+02:00"
+
